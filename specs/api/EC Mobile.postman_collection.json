@@ -1,0 +1,787 @@
+{
+  "info": {
+    "_postman_id": "6ec240c6-8548-4d32-8bb0-88b6fb5540c0",
+    "name": "EC Mobile",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "28242807",
+    "_collection_link": "https://go.postman.co/collection/28242807-6ec240c6-8548-4d32-8bb0-88b6fb5540c0?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Validate Phone Number",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.environment.set('chToken', pm.response.json().challengeToken)"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "POST",
+        "header": [
+          {
+            "key": "X-EC-Dev-Auth-Key",
+            "value": "default",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"phoneExtension\": \"966\",\n    \"phoneNumber\": \"232323\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{apiHost}}/o/ixlr-auth/v1.0/verification-code",
+          "host": [
+            "{{apiHost}}"
+          ],
+          "path": [
+            "o",
+            "ixlr-auth",
+            "v1.0",
+            "verification-code"
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "Exiting User",
+          "originalRequest": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-EC-Dev-Auth-Key",
+                "value": "default",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"phoneExtension\": \"966\",\n    \"phoneNumber\": \"232323\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{apiHost}}/o/ixlr-auth/v1.0/verification-code",
+              "host": [
+                "{{apiHost}}"
+              ],
+              "path": [
+                "o",
+                "ixlr-auth",
+                "v1.0",
+                "verification-code"
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": null,
+          "header": [
+            {
+              "key": "X-Content-Type-Options",
+              "value": "nosniff"
+            },
+            {
+              "key": "X-Frame-Options",
+              "value": "SAMEORIGIN"
+            },
+            {
+              "key": "Set-Cookie",
+              "value": "JSESSIONID=62A8CE7045A36429B7C23B52641CC133; Path=/; HttpOnly"
+            },
+            {
+              "key": "Date",
+              "value": "Mon, 27 Apr 2026 06:27:32 GMT"
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache, no-store"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "Content-Length",
+              "value": "123"
+            },
+            {
+              "key": "Keep-Alive",
+              "value": "timeout=20"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n    \"challengeToken\": \"c786d96a-2612-5964-c03e-0f8f4441e9e6\",\n    \"codeLength\": 6,\n    \"expiresIn\": 60,\n    \"userStatus\": 1\n}"
+        }
+      ]
+    },
+    {
+      "name": "Get Token by Phone",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.environment.set('bearer', pm.response.json().accessToken)",
+              "pm.environment.set('refreshToken', pm.response.json().refreshToken)"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "POST",
+        "header": [
+          {
+            "key": "X-EC-Dev-Auth-Key",
+            "value": "default",
+            "type": "text"
+          },
+          {
+            "key": "X-Auth-Provider",
+            "value": "custom",
+            "type": "text",
+            "disabled": true
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"fullName\": \"Jonh Smith\",\n    \"phoneNumber\": \"232323\",\n    \"phoneExtension\": \"966\",\n    \"challengeToken\": \"{{chToken}}\",\n    \"code\": \"039489\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{apiHost}}/o/ixlr-auth/v1.0/token",
+          "host": [
+            "{{apiHost}}"
+          ],
+          "path": [
+            "o",
+            "ixlr-auth",
+            "v1.0",
+            "token"
+          ],
+          "query": [
+            {
+              "key": "",
+              "value": "abc",
+              "type": "text",
+              "disabled": true
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Validate Email",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.environment.set('chToken', pm.response.json().challengeToken)"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "POST",
+        "header": [
+          {
+            "key": "X-EC-Dev-Auth-Key",
+            "value": "default",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"emailAddress\": \"new.user@example.com\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{apiHost}}/o/ixlr-auth/v1.0/verification-code",
+          "host": [
+            "{{apiHost}}"
+          ],
+          "path": [
+            "o",
+            "ixlr-auth",
+            "v1.0",
+            "verification-code"
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "Existing User",
+          "originalRequest": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-EC-Dev-Auth-Key",
+                "value": "default",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"emailAddress\": \"jonh.smith@example.com\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{apiHost}}/o/ixlr-auth/v1.0/verification-code",
+              "host": [
+                "{{apiHost}}"
+              ],
+              "path": [
+                "o",
+                "ixlr-auth",
+                "v1.0",
+                "verification-code"
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": null,
+          "header": [
+            {
+              "key": "X-Content-Type-Options",
+              "value": "nosniff"
+            },
+            {
+              "key": "X-Frame-Options",
+              "value": "SAMEORIGIN"
+            },
+            {
+              "key": "Date",
+              "value": "Mon, 27 Apr 2026 06:28:00 GMT"
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache, no-store"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "Content-Length",
+              "value": "123"
+            },
+            {
+              "key": "Keep-Alive",
+              "value": "timeout=20"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n    \"challengeToken\": \"a0c5c6fb-0df2-35c3-9b35-90f7e13e8d7a\",\n    \"codeLength\": 6,\n    \"expiresIn\": 60,\n    \"userStatus\": 1\n}"
+        },
+        {
+          "name": "New User",
+          "originalRequest": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-EC-Dev-Auth-Key",
+                "value": "default",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"emailAddress\": \"new.user@example.com\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{apiHost}}/o/ixlr-auth/v1.0/verification-code",
+              "host": [
+                "{{apiHost}}"
+              ],
+              "path": [
+                "o",
+                "ixlr-auth",
+                "v1.0",
+                "verification-code"
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": null,
+          "header": [
+            {
+              "key": "X-Content-Type-Options",
+              "value": "nosniff"
+            },
+            {
+              "key": "X-Frame-Options",
+              "value": "SAMEORIGIN"
+            },
+            {
+              "key": "Date",
+              "value": "Mon, 27 Apr 2026 06:32:45 GMT"
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache, no-store"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "Content-Length",
+              "value": "123"
+            },
+            {
+              "key": "Keep-Alive",
+              "value": "timeout=20"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n    \"challengeToken\": \"00b99a09-fddf-6648-5ebc-571cbe6e007c\",\n    \"codeLength\": 6,\n    \"expiresIn\": 60,\n    \"userStatus\": 0\n}"
+        }
+      ]
+    },
+    {
+      "name": "Get Token By Email",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.environment.set('bearer', pm.response.json().accessToken)",
+              "pm.environment.set('refreshToken', pm.response.json().refreshToken)"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "POST",
+        "header": [
+          {
+            "key": "X-EC-Dev-Auth-Key",
+            "value": "default",
+            "type": "text"
+          },
+          {
+            "key": "X-Auth-Provider",
+            "value": "custom",
+            "type": "text",
+            "disabled": true
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"fullName\": \"New User\",\n    \"emailAddress\": \"new.user@example.com\",\n    \"challengeToken\": \"{{chToken}}\",\n    \"code\": \"955217\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{apiHost}}/o/ixlr-auth/v1.0/token",
+          "host": [
+            "{{apiHost}}"
+          ],
+          "path": [
+            "o",
+            "ixlr-auth",
+            "v1.0",
+            "token"
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "Success existing user",
+          "originalRequest": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-EC-Dev-Auth-Key",
+                "value": "default",
+                "type": "text"
+              },
+              {
+                "key": "X-Auth-Provider",
+                "value": "custom",
+                "type": "text",
+                "disabled": true
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"fullName\": \"Jonh Smith\",\n    \"emailAddress\": \"jonh.smith@example.com\",\n    \"challengeToken\": \"{{chToken}}\",\n    \"code\": \"777850\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{apiHost}}/o/ixlr-auth/v1.0/token",
+              "host": [
+                "{{apiHost}}"
+              ],
+              "path": [
+                "o",
+                "ixlr-auth",
+                "v1.0",
+                "token"
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": null,
+          "header": [
+            {
+              "key": "X-Content-Type-Options",
+              "value": "nosniff"
+            },
+            {
+              "key": "X-Frame-Options",
+              "value": "SAMEORIGIN"
+            },
+            {
+              "key": "Date",
+              "value": "Mon, 27 Apr 2026 06:32:02 GMT"
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache, no-store"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "Content-Length",
+              "value": "1844"
+            },
+            {
+              "key": "Keep-Alive",
+              "value": "timeout=20"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n    \"accessToken\": \"eyJ0eXAiOiJhdCtqd3QiLCJhbGciOiJSUzI1NiJ9.eyJqdGkiOiJiZmQzOTFjM2IzNTNlNGYxNTEzOGY2Y2IwNzE4MjQ5ZTAxY2NjNGMzNzc1MTBmMGY5ZWVmMThiZWFiNDEiLCJjbGllbnRfaWQiOiJtb2JpbGUtcGhvbmUtYXV0aCIsImlhdCI6MTc3NzI3MTUyMiwiZXhwIjoxNzc3MjcyMTIyLCJzdWIiOiIzMzY4MSIsInVzZXJuYW1lIjoiam9uaC5zbWl0aCIsImlzcyI6ImxvY2FsLmdhbGEuY29tIiwic2NvcGUiOiJMaWZlcmF5Lk5vdGlmaWNhdGlvbi5SRVNULmV2ZXJ5dGhpbmcucmVhZCBHQUxBLmV2ZXJ5dGhpbmcgTGlmZXJheS5Ob3RpZmljYXRpb24uUkVTVC5ldmVyeXRoaW5nLndyaXRlIExpZmVyYXkuSGVhZGxlc3MuVXNlci5Ob3RpZmljYXRpb24uZXZlcnl0aGluZy5yZWFkIExpZmVyYXkuSGVhZGxlc3MuVXNlci5Ob3RpZmljYXRpb24uZXZlcnl0aGluZy53cml0ZSBHQUxBLmV2ZXJ5dGhpbmcud3JpdGUgSVhMUi5BdXRoLlJFU1QuZXZlcnl0aGluZy53cml0ZSBHQUxBLmV2ZXJ5dGhpbmcucmVhZCBMaWZlcmF5LkhlYWRsZXNzLlVzZXIuTm90aWZpY2F0aW9uLmV2ZXJ5dGhpbmcgTGlmZXJheS5Ob3RpZmljYXRpb24uUkVTVC5ldmVyeXRoaW5nIElYTFIuQXV0aC5SRVNULmV2ZXJ5dGhpbmcucmVhZCBJWExSLkF1dGguUkVTVC5ldmVyeXRoaW5nIiwiZ3JhbnRfdHlwZSI6InBob25lX2F1dGgifQ.BC08r4fYcgvQVNPH3nTLRo9nZwpETZLpQSjVxpzpgXqpycEBP-xwg3y82cr5GL0TW7bNIxKb2VgJP2-0g-tEHYtvzvvjjk12tvI9JJjUkv5T0eiR8O3b_rEW9auqstjQR9hj7_OAm1ohtWzWNKbbovpseZh-0MtAETubSwFQyyGtnulmzRc18fp2d-mkVCBWfNZ2QmxlchHF0OdZEprLc3oJOolhPXEL_b5vdOw8gno4uAHRO8c5z62bInhqxCvTRbs5sFG7janDXMoogEDL1r8U5i5QfF8VPd0vxzyl71GyICrTLS0LCNQas6beSKwL7NdiVDWAgQRynWZ8vfe1tw\",\n    \"expiresIn\": 600,\n    \"refreshToken\": \"659948e82b47493918e9f2a4b22e23965c4dc40897498bbd76035f0f420965\",\n    \"scope\": \"Liferay.Notification.REST.everything.read GALA.everything Liferay.Notification.REST.everything.write Liferay.Headless.User.Notification.everything.read Liferay.Headless.User.Notification.everything.write GALA.everything.write IXLR.Auth.REST.everything.write GALA.everything.read Liferay.Headless.User.Notification.everything Liferay.Notification.REST.everything IXLR.Auth.REST.everything.read IXLR.Auth.REST.everything\",\n    \"tokenType\": \"Bearer\"\n}"
+        },
+        {
+          "name": "Success new user",
+          "originalRequest": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-EC-Dev-Auth-Key",
+                "value": "default",
+                "type": "text"
+              },
+              {
+                "key": "X-Auth-Provider",
+                "value": "custom",
+                "type": "text",
+                "disabled": true
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"fullName\": \"New User\",\n    \"emailAddress\": \"new.user@example.com\",\n    \"challengeToken\": \"{{chToken}}\",\n    \"code\": \"040477\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{apiHost}}/o/ixlr-auth/v1.0/token",
+              "host": [
+                "{{apiHost}}"
+              ],
+              "path": [
+                "o",
+                "ixlr-auth",
+                "v1.0",
+                "token"
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": null,
+          "header": [
+            {
+              "key": "X-Content-Type-Options",
+              "value": "nosniff"
+            },
+            {
+              "key": "X-Frame-Options",
+              "value": "SAMEORIGIN"
+            },
+            {
+              "key": "Date",
+              "value": "Mon, 27 Apr 2026 06:33:23 GMT"
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache, no-store"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "Content-Length",
+              "value": "1843"
+            },
+            {
+              "key": "Keep-Alive",
+              "value": "timeout=20"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n    \"accessToken\": \"eyJ0eXAiOiJhdCtqd3QiLCJhbGciOiJSUzI1NiJ9.eyJqdGkiOiIxYzZlMjRhMGMyMTA0Nzc1NWY1ZTQzNTU3ODJmODNjNmMzMzU0NDAzZjdhMmU3ZDNjNWE4YmQ4OGYyNWRlOWIiLCJjbGllbnRfaWQiOiJtb2JpbGUtcGhvbmUtYXV0aCIsImlhdCI6MTc3NzI3MTYwMywiZXhwIjoxNzc3MjcyMjAzLCJzdWIiOiIzMzc0MyIsInVzZXJuYW1lIjoibmV3LnVzZXIiLCJpc3MiOiJsb2NhbC5nYWxhLmNvbSIsInNjb3BlIjoiTGlmZXJheS5Ob3RpZmljYXRpb24uUkVTVC5ldmVyeXRoaW5nLnJlYWQgR0FMQS5ldmVyeXRoaW5nIExpZmVyYXkuTm90aWZpY2F0aW9uLlJFU1QuZXZlcnl0aGluZy53cml0ZSBMaWZlcmF5LkhlYWRsZXNzLlVzZXIuTm90aWZpY2F0aW9uLmV2ZXJ5dGhpbmcucmVhZCBMaWZlcmF5LkhlYWRsZXNzLlVzZXIuTm90aWZpY2F0aW9uLmV2ZXJ5dGhpbmcud3JpdGUgR0FMQS5ldmVyeXRoaW5nLndyaXRlIElYTFIuQXV0aC5SRVNULmV2ZXJ5dGhpbmcud3JpdGUgR0FMQS5ldmVyeXRoaW5nLnJlYWQgTGlmZXJheS5IZWFkbGVzcy5Vc2VyLk5vdGlmaWNhdGlvbi5ldmVyeXRoaW5nIExpZmVyYXkuTm90aWZpY2F0aW9uLlJFU1QuZXZlcnl0aGluZyBJWExSLkF1dGguUkVTVC5ldmVyeXRoaW5nLnJlYWQgSVhMUi5BdXRoLlJFU1QuZXZlcnl0aGluZyIsImdyYW50X3R5cGUiOiJwaG9uZV9hdXRoIn0.Xp7M5lMU_bMeTlYC-2FZKq9r017D5JFhw1jhXPDjH8A7X19tQmXBYWLsY6tItCKGkbrcxjpZovEUeuHQltpiZ4DvdNngm6iSyVke0u2PkGNncN34hU-FwmuyjkTI_S7sCy24881ROWCVeTnp1fIYRmNDDvCCqdAThj9jcKoG2Zn5uQVZ9U2Brqri1jHH7zAFWGzN1Ybviv5aMdF7-CSFBrdHVFCnh2QEv8_X5se31mcXG_f1CCXRQvh6oYGvh27NTIzQDD1ai6vSsV5x7osza1wS36-LptKEBd3ZkBBmYVmqT0RfU6Jf8wYgycnXz4lFNE2uC5J2NGzSpHh9uv8OKg\",\n    \"expiresIn\": 600,\n    \"refreshToken\": \"f09a79f7a82e38ad3208f5552559ec67d6d952b44e3a41bd47398387cab0\",\n    \"scope\": \"Liferay.Notification.REST.everything.read GALA.everything Liferay.Notification.REST.everything.write Liferay.Headless.User.Notification.everything.read Liferay.Headless.User.Notification.everything.write GALA.everything.write IXLR.Auth.REST.everything.write GALA.everything.read Liferay.Headless.User.Notification.everything Liferay.Notification.REST.everything IXLR.Auth.REST.everything.read IXLR.Auth.REST.everything\",\n    \"tokenType\": \"Bearer\"\n}"
+        }
+      ]
+    },
+    {
+      "name": "Get token refresh token",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.environment.set('bearer', pm.response.json().access_token)",
+              "pm.environment.set('refreshToken', pm.response.json().refresh_token)"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "urlencoded",
+          "urlencoded": [
+            {
+              "key": "grant_type",
+              "value": "refresh_token",
+              "type": "text",
+              "uuid": "dea7edc9-47ef-4c8d-b375-07835787fd94"
+            },
+            {
+              "key": "client_id",
+              "value": "mobile-phone-auth",
+              "type": "text",
+              "uuid": "164ffa69-b941-42eb-96af-a76eeae62ac2"
+            },
+            {
+              "key": "refresh_token",
+              "value": "{{refreshToken}}",
+              "type": "text",
+              "uuid": "6173e1d9-e90b-467b-80e9-eaf2a623e9df"
+            }
+          ]
+        },
+        "url": {
+          "raw": "{{apiHost}}/o/oauth2/token",
+          "host": [
+            "{{apiHost}}"
+          ],
+          "path": [
+            "o",
+            "oauth2",
+            "token"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Revoke Token",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "X-EC-Dev-Auth-Key",
+            "value": "default",
+            "type": "text"
+          },
+          {
+            "key": "X-Auth-Provider",
+            "value": "custom",
+            "type": "text",
+            "disabled": true
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{apiHost}}/o/ixlr-auth/v1.0/revoke",
+          "host": [
+            "{{apiHost}}"
+          ],
+          "path": [
+            "o",
+            "ixlr-auth",
+            "v1.0",
+            "revoke"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get Notifications",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"phoneNumber\": \"123456\",\n    \"registrationToken\": \"69572556-587b-fda4-0185-03d9223ef704\",\n    \"code\": \"1234\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{apiHost}}/o/headless-user-notification/v1.0/my-user-notifications",
+          "host": [
+            "{{apiHost}}"
+          ],
+          "path": [
+            "o",
+            "headless-user-notification",
+            "v1.0",
+            "my-user-notifications"
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearer}}",
+        "type": "string"
+      }
+    ]
+  },
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ]
+}
