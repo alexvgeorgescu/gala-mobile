@@ -28,6 +28,11 @@ class HomeShell extends StatelessWidget {
             label: 'Requests',
           ),
           NavigationDestination(
+            icon: Icon(Icons.favorite_border),
+            selectedIcon: Icon(Icons.favorite),
+            label: 'Interests',
+          ),
+          NavigationDestination(
             icon: Icon(Icons.account_circle_outlined),
             selectedIcon: Icon(Icons.account_circle),
             label: 'My Account',

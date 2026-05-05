@@ -807,6 +807,94 @@
         }
       },
       "response": []
+    },
+    {
+      "name": "Get Interests",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{apiHost}}/o/c/interests",
+          "host": [
+            "{{apiHost}}"
+          ],
+          "path": [
+            "o",
+            "c",
+            "interests"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Post Interest",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"name\": \"Vaza de flori\",\n    \"description\": \"Descriere cu link-uri\",\n    \"type\": {\n        \"key\": \"object\",\n        \"name\": \"Object\"\n    }\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{apiHost}}/o/c/interests",
+          "host": [
+            "{{apiHost}}"
+          ],
+          "path": [
+            "o",
+            "c",
+            "interests"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get interests",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{apiHost}}/o/c/interests/34587",
+          "host": [
+            "{{apiHost}}"
+          ],
+          "path": [
+            "o",
+            "c",
+            "interests",
+            "34587"
+          ]
+        }
+      },
+      "response": []
     }
   ],
   "auth": {

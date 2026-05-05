@@ -27,6 +27,13 @@ class AccountMenuPage extends StatelessWidget {
           ),
           const Divider(height: 0),
           ListTile(
+            leading: const Icon(Icons.favorite_border),
+            title: const Text('My Interests'),
+            trailing: const Icon(Icons.chevron_right),
+            onTap: () => context.go('/interests'),
+          ),
+          const Divider(height: 0),
+          ListTile(
             leading: const Icon(Icons.logout),
             title: const Text('Logout'),
             onTap: () => context.read<AuthCubit>().logout(),

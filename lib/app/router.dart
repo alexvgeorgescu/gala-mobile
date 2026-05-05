@@ -9,6 +9,10 @@ import 'package:gala_mobile/features/account/presentation/cubit/events_cubit.dar
 import 'package:gala_mobile/features/account/presentation/pages/account_menu_page.dart';
 import 'package:gala_mobile/features/account/presentation/pages/event_form_page.dart';
 import 'package:gala_mobile/features/account/presentation/pages/my_events_page.dart';
+import 'package:gala_mobile/features/interests/data/interests_repository.dart';
+import 'package:gala_mobile/features/interests/presentation/cubit/interests_cubit.dart';
+import 'package:gala_mobile/features/interests/presentation/pages/interest_form_page.dart';
+import 'package:gala_mobile/features/interests/presentation/pages/my_interests_page.dart';
 import 'package:gala_mobile/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:gala_mobile/features/auth/presentation/cubit/auth_state.dart';
 import 'package:gala_mobile/features/auth/presentation/cubit/otp_timer_cubit.dart';
@@ -20,7 +24,7 @@ import 'package:gala_mobile/features/profile/presentation/cubit/profile_cubit.da
 import 'package:gala_mobile/features/profile/presentation/pages/profile_page.dart';
 import 'package:gala_mobile/features/requests/presentation/pages/requests_page.dart';
 
-const _authenticatedRoots = ['/network', '/requests', '/account'];
+const _authenticatedRoots = ['/network', '/requests', '/interests', '/account'];
 
 bool _isAuthenticatedPath(String path) {
   return _authenticatedRoots
@@ -86,6 +90,31 @@ GoRouter createRouter(AuthCubit authCubit, SecureStorage storage, Dio dio) {
               GoRoute(
                 path: '/requests',
                 builder: (context, state) => const RequestsPage(),
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: '/interests',
+                builder: (context, state) => BlocProvider(
+                  create: (_) => InterestsCubit(
+                    repository: InterestsRepository(dio: dio),
+                  )..load(),
+                  child: const MyInterestsPage(),
+                ),
+                routes: [
+                  GoRoute(
+                    path: 'new',
+                    builder: (context, state) {
+                      final cubit = state.extra as InterestsCubit;
+                      return BlocProvider.value(
+                        value: cubit,
+                        child: const InterestFormPage(),
+                      );
+                    },
+                  ),
+                ],
               ),
             ],
           ),
