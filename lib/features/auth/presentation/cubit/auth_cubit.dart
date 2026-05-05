@@ -1,19 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gala_mobile/core/network/dio_error_message.dart';
 import 'package:gala_mobile/features/auth/data/auth_repository.dart';
 import 'package:gala_mobile/features/auth/presentation/cubit/auth_state.dart';
-
-String _friendlyError(Object e) {
-  if (e is DioException) {
-    final status = e.response?.statusCode;
-    final path = e.requestOptions.path;
-    if (status != null) {
-      return 'HTTP $status on $path';
-    }
-    return 'Network error: ${e.type.name} ($path)';
-  }
-  return e.toString();
-}
 
 class AuthCubit extends Cubit<AuthState> {
   final AuthRepository _repository;
@@ -88,7 +77,7 @@ class AuthCubit extends Cubit<AuthState> {
         fullName: fullName,
       ));
     } catch (e) {
-      emit(AuthError(_friendlyError(e)));
+      emit(AuthError(friendlyDioError(e)));
     }
   }
 
@@ -114,10 +103,10 @@ class AuthCubit extends Cubit<AuthState> {
       } else if (status == 423) {
         emit(AuthOtpLocked(context));
       } else {
-        emit(AuthError(_friendlyError(e)));
+        emit(AuthError(friendlyDioError(e)));
       }
     } catch (e) {
-      emit(AuthError(_friendlyError(e)));
+      emit(AuthError(friendlyDioError(e)));
     }
   }
 

@@ -1,9 +1,13 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gala_mobile/app/home_shell.dart';
 import 'package:gala_mobile/core/storage/secure_storage.dart';
+import 'package:gala_mobile/features/account/data/events_repository.dart';
+import 'package:gala_mobile/features/account/presentation/cubit/events_cubit.dart';
 import 'package:gala_mobile/features/account/presentation/pages/account_menu_page.dart';
+import 'package:gala_mobile/features/account/presentation/pages/event_form_page.dart';
 import 'package:gala_mobile/features/account/presentation/pages/my_events_page.dart';
 import 'package:gala_mobile/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:gala_mobile/features/auth/presentation/cubit/auth_state.dart';
@@ -23,7 +27,7 @@ bool _isAuthenticatedPath(String path) {
       .any((root) => path == root || path.startsWith('$root/'));
 }
 
-GoRouter createRouter(AuthCubit authCubit, SecureStorage storage) {
+GoRouter createRouter(AuthCubit authCubit, SecureStorage storage, Dio dio) {
   return GoRouter(
     initialLocation: '/',
     refreshListenable: _AuthRefreshNotifier(authCubit),
@@ -100,7 +104,24 @@ GoRouter createRouter(AuthCubit authCubit, SecureStorage storage) {
                   ),
                   GoRoute(
                     path: 'events',
-                    builder: (context, state) => const MyEventsPage(),
+                    builder: (context, state) => BlocProvider(
+                      create: (_) => EventsCubit(
+                        repository: EventsRepository(dio: dio),
+                      )..load(),
+                      child: const MyEventsPage(),
+                    ),
+                    routes: [
+                      GoRoute(
+                        path: 'new',
+                        builder: (context, state) {
+                          final cubit = state.extra as EventsCubit;
+                          return BlocProvider.value(
+                            value: cubit,
+                            child: const EventFormPage(),
+                          );
+                        },
+                      ),
+                    ],
                   ),
                 ],
               ),

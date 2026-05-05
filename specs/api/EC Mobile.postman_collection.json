@@ -748,6 +748,65 @@
         }
       },
       "response": []
+    },
+    {
+      "name": "Get Events",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{apiHost}}/o/c/events",
+          "host": [
+            "{{apiHost}}"
+          ],
+          "path": [
+            "o",
+            "c",
+            "events"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Post Event",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"date\": \"1992-05-05\",\n  \"name\": \"Marriage\",\n  \"recurence\": {\n    \"key\": \"yearly\",\n    \"name\": \"Yearly\"\n  }\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{apiHost}}/o/c/events",
+          "host": [
+            "{{apiHost}}"
+          ],
+          "path": [
+            "o",
+            "c",
+            "events"
+          ]
+        }
+      },
+      "response": []
     }
   ],
   "auth": {

@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -30,17 +31,20 @@ void main() async {
   runApp(GalaApp(
     authCubit: authCubit,
     storage: storage,
+    dio: dio,
   ));
 }
 
 class GalaApp extends StatefulWidget {
   final AuthCubit authCubit;
   final SecureStorage storage;
+  final Dio dio;
 
   const GalaApp({
     super.key,
     required this.authCubit,
     required this.storage,
+    required this.dio,
   });
 
   @override
@@ -48,7 +52,8 @@ class GalaApp extends StatefulWidget {
 }
 
 class _GalaAppState extends State<GalaApp> {
-  late final _router = createRouter(widget.authCubit, widget.storage);
+  late final _router =
+      createRouter(widget.authCubit, widget.storage, widget.dio);
   final _scaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();
 
   void _showSnack(SnackBar snack) {
