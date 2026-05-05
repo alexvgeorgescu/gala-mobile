@@ -1,29 +1,41 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:gala_mobile/app/home_shell.dart';
 import 'package:gala_mobile/core/storage/secure_storage.dart';
+import 'package:gala_mobile/features/account/presentation/pages/account_menu_page.dart';
+import 'package:gala_mobile/features/account/presentation/pages/my_events_page.dart';
 import 'package:gala_mobile/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:gala_mobile/features/auth/presentation/cubit/auth_state.dart';
 import 'package:gala_mobile/features/auth/presentation/cubit/otp_timer_cubit.dart';
 import 'package:gala_mobile/features/auth/presentation/pages/landing_page.dart';
 import 'package:gala_mobile/features/auth/presentation/pages/email_input_page.dart';
 import 'package:gala_mobile/features/auth/presentation/pages/otp_input_page.dart';
+import 'package:gala_mobile/features/network/presentation/pages/network_page.dart';
 import 'package:gala_mobile/features/profile/presentation/cubit/profile_cubit.dart';
 import 'package:gala_mobile/features/profile/presentation/pages/profile_page.dart';
+import 'package:gala_mobile/features/requests/presentation/pages/requests_page.dart';
+
+const _authenticatedRoots = ['/network', '/requests', '/account'];
+
+bool _isAuthenticatedPath(String path) {
+  return _authenticatedRoots
+      .any((root) => path == root || path.startsWith('$root/'));
+}
 
 GoRouter createRouter(AuthCubit authCubit, SecureStorage storage) {
   return GoRouter(
     initialLocation: '/',
     refreshListenable: _AuthRefreshNotifier(authCubit),
     redirect: (context, state) {
-      final authState = authCubit.state;
-      final isAuthenticated = authState is AuthAuthenticated;
+      final isAuthenticated = authCubit.state is AuthAuthenticated;
       final currentPath = state.matchedLocation;
+      final inAuthenticatedSection = _isAuthenticatedPath(currentPath);
 
-      if (isAuthenticated && currentPath != '/profile') {
-        return '/profile';
+      if (isAuthenticated && !inAuthenticatedSection) {
+        return '/network';
       }
-      if (!isAuthenticated && currentPath == '/profile') {
+      if (!isAuthenticated && inAuthenticatedSection) {
         return '/';
       }
       return null;
@@ -53,12 +65,48 @@ GoRouter createRouter(AuthCubit authCubit, SecureStorage storage) {
           );
         },
       ),
-      GoRoute(
-        path: '/profile',
-        builder: (context, state) => BlocProvider(
-          create: (context) => ProfileCubit(storage: storage),
-          child: const ProfilePage(),
-        ),
+      StatefulShellRoute.indexedStack(
+        builder: (context, state, navigationShell) =>
+            HomeShell(navigationShell: navigationShell),
+        branches: [
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: '/network',
+                builder: (context, state) => const NetworkPage(),
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: '/requests',
+                builder: (context, state) => const RequestsPage(),
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: '/account',
+                builder: (context, state) => const AccountMenuPage(),
+                routes: [
+                  GoRoute(
+                    path: 'profile',
+                    builder: (context, state) => BlocProvider(
+                      create: (context) => ProfileCubit(storage: storage),
+                      child: const ProfilePage(),
+                    ),
+                  ),
+                  GoRoute(
+                    path: 'events',
+                    builder: (context, state) => const MyEventsPage(),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ],
       ),
     ],
   );

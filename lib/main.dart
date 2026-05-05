@@ -77,7 +77,7 @@ class _GalaAppState extends State<GalaApp> {
               } else if (state is AuthOtpSent) {
                 _router.go('/auth/otp', extra: state);
               } else if (state is AuthAuthenticated) {
-                _router.go('/profile');
+                _router.go('/network');
               } else if (state is AuthInitial) {
                 _router.go('/');
               } else if (state is AuthUserStatusMismatch) {
