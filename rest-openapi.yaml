@@ -1,0 +1,271 @@
+components:
+    schemas:
+        Connection:
+            description: "A confirmed social relation (friendship) the caller has with another user."
+            properties:
+                userId:
+                    format: int64
+                    type: integer
+                screenName:
+                    type: string
+                firstName:
+                    type: string
+                lastName:
+                    type: string
+                emailAddress:
+                    type: string
+                portraitURL:
+                    type: string
+                relationId:
+                    format: int64
+                    type: integer
+                createDate:
+                    format: int64
+                    type: integer
+            type: object
+        ConnectRequest:
+            description: "A pending or resolved connection request between two users."
+            properties:
+                requestId:
+                    format: int64
+                    type: integer
+                senderUserId:
+                    format: int64
+                    type: integer
+                receiverUserId:
+                    format: int64
+                    type: integer
+                status:
+                    description: "SocialRequestConstants: 1=confirmed, 2=ignored, 3=pending."
+                    format: int32
+                    type: integer
+                createDate:
+                    format: int64
+                    type: integer
+                modifiedDate:
+                    format: int64
+                    type: integer
+                extraData:
+                    type: string
+            type: object
+        CreateConnectRequest:
+            description: "Payload for POST /connect-requests."
+            properties:
+                receiverUserId:
+                    format: int64
+                    type: integer
+                extraData:
+                    description: "Optional opaque string stored on the SocialRequest."
+                    type: string
+            required:
+                - receiverUserId
+            type: object
+        Member:
+            description: "A platform member returned by the member search endpoint."
+            properties:
+                id:
+                    format: int64
+                    type: integer
+                name:
+                    type: string
+                firstName:
+                    type: string
+                lastName:
+                    type: string
+                email:
+                    type: string
+                avatarURL:
+                    type: string
+            type: object
+info:
+    description: "GALA social graph REST API"
+    license:
+        name: "Apache 2.0"
+        url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+    title: "GALA"
+    version: v1.0
+openapi: 3.0.1
+paths:
+    /connect-requests:
+        get:
+            description: "Retrieves the caller's pending connect requests. Use the direction query parameter to filter by incoming (receiver), outgoing (sender), or all (default)."
+            operationId: getConnectRequestsPage
+            parameters:
+                -   description: "One of: incoming, outgoing, all. Default: all."
+                    in: query
+                    name: direction
+                    schema:
+                        type: string
+                -   in: query
+                    name: page
+                    schema:
+                        type: integer
+                -   in: query
+                    name: pageSize
+                    schema:
+                        type: integer
+            responses:
+                200:
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: "#/components/schemas/ConnectRequest"
+                                type: array
+                        application/xml:
+                            schema:
+                                items:
+                                    $ref: "#/components/schemas/ConnectRequest"
+                                type: array
+                    description: "Paginated list of the caller's pending incoming connect requests."
+            tags:
+                - ConnectRequest
+        post:
+            description: "Creates a new pending connect request from the caller to the receiver."
+            operationId: postConnectRequest
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/CreateConnectRequest"
+                    application/xml:
+                        schema:
+                            $ref: "#/components/schemas/CreateConnectRequest"
+                required: true
+            responses:
+                200:
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/ConnectRequest"
+                        application/xml:
+                            schema:
+                                $ref: "#/components/schemas/ConnectRequest"
+                    description: "Pending connect request created."
+            tags:
+                - ConnectRequest
+    "/connect-requests/{requestId}":
+        delete:
+            description: "Deletes a connect request sent by the caller. Sender only."
+            operationId: deleteConnectRequest
+            parameters:
+                -   in: path
+                    name: requestId
+                    required: true
+                    schema:
+                        format: int64
+                        type: integer
+            responses:
+                204:
+                    description: "Connect request deleted."
+            tags:
+                - ConnectRequest
+    "/connect-requests/{requestId}/accept":
+        post:
+            description: "Caller (receiver) confirms the connect request; interpreter creates the SocialRelation."
+            operationId: postConnectRequestAccept
+            parameters:
+                -   in: path
+                    name: requestId
+                    required: true
+                    schema:
+                        format: int64
+                        type: integer
+            responses:
+                200:
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/ConnectRequest"
+                        application/xml:
+                            schema:
+                                $ref: "#/components/schemas/ConnectRequest"
+                    description: "Request confirmed; friendship established."
+            tags:
+                - ConnectRequest
+    "/connect-requests/{requestId}/reject":
+        post:
+            description: "Caller (receiver) rejects the connect request."
+            operationId: postConnectRequestReject
+            parameters:
+                -   in: path
+                    name: requestId
+                    required: true
+                    schema:
+                        format: int64
+                        type: integer
+            responses:
+                200:
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/ConnectRequest"
+                        application/xml:
+                            schema:
+                                $ref: "#/components/schemas/ConnectRequest"
+                    description: "Request ignored."
+            tags:
+                - ConnectRequest
+    /connections:
+        get:
+            description: "Retrieves the caller's confirmed connections (friends). Paginated."
+            operationId: getConnectionsPage
+            parameters:
+                -   in: query
+                    name: page
+                    schema:
+                        type: integer
+                -   in: query
+                    name: pageSize
+                    schema:
+                        type: integer
+            responses:
+                200:
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: "#/components/schemas/Connection"
+                                type: array
+                        application/xml:
+                            schema:
+                                items:
+                                    $ref: "#/components/schemas/Connection"
+                                type: array
+                    description: "Paginated list of the caller's connections."
+            tags:
+                - Connection
+    /members:
+        get:
+            description: "Searches platform members holding the configured role. Intended for mobile autosuggest. Excludes the caller and the default user. Authentication required."
+            operationId: getMembersPage
+            parameters:
+                -   description: "Keyword matched against first name, last name, screen name, and email."
+                    in: query
+                    name: search
+                    schema:
+                        type: string
+                -   in: query
+                    name: page
+                    schema:
+                        type: integer
+                -   in: query
+                    name: pageSize
+                    schema:
+                        type: integer
+            responses:
+                200:
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: "#/components/schemas/Member"
+                                type: array
+                        application/xml:
+                            schema:
+                                items:
+                                    $ref: "#/components/schemas/Member"
+                                type: array
+                    description: "Paginated list of members matching the keyword."
+            tags:
+                - Member

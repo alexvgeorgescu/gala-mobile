@@ -19,6 +19,9 @@ import 'package:gala_mobile/features/auth/presentation/cubit/otp_timer_cubit.dar
 import 'package:gala_mobile/features/auth/presentation/pages/landing_page.dart';
 import 'package:gala_mobile/features/auth/presentation/pages/email_input_page.dart';
 import 'package:gala_mobile/features/auth/presentation/pages/otp_input_page.dart';
+import 'package:gala_mobile/features/members/data/members_repository.dart';
+import 'package:gala_mobile/features/members/presentation/cubit/member_search_cubit.dart';
+import 'package:gala_mobile/features/members/presentation/pages/member_search_page.dart';
 import 'package:gala_mobile/features/network/presentation/pages/network_page.dart';
 import 'package:gala_mobile/features/profile/presentation/cubit/profile_cubit.dart';
 import 'package:gala_mobile/features/profile/presentation/pages/profile_page.dart';
@@ -82,6 +85,17 @@ GoRouter createRouter(AuthCubit authCubit, SecureStorage storage, Dio dio) {
               GoRoute(
                 path: '/network',
                 builder: (context, state) => const NetworkPage(),
+                routes: [
+                  GoRoute(
+                    path: 'search',
+                    builder: (context, state) => BlocProvider(
+                      create: (_) => MemberSearchCubit(
+                        repository: MembersRepository(dio: dio),
+                      ),
+                      child: const MemberSearchPage(),
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
